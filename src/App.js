@@ -1,33 +1,35 @@
-import React from 'react';
+import React, {Component} from 'react';
 import List from './List';
 import './App.css';
 
-function App(props) {
+class App extends Component {
   
-  let allCards = props.store.STORE.allCards;
-
-  function cardsArray(list) {
-    let cards = list.cardIds.map(cardId => {
-      return allCards[cardId];
-    });
-    return cards;
+  static defaultProps = {
+    store: {
+      lists: [],
+      allCards: {},
+    }
+  };
+  
+  render () {
+    const { store } = this.props;
+    return (
+      <main className='App'>
+        <header className='App-header'>
+          <h1>Trelloyes!</h1>
+        </header>
+        <div className='App-list'>
+          {store.lists.map(list => (
+            <List
+              key={list.id}
+              header={list.header}
+              cards={list.cardIds.map(id => store.allCards[id])}
+            />
+          ))}
+        </div>
+      </main>
+    );
   }
-  
-  let cardLists = props.store.STORE.lists.map(list => {
-    return <List key={list.id} cards={cardsArray(list)} header={list.header} />;
-  })
-  
-  return (
-    <main className='App'>
-      <header className='App-header'>
-        <h1>Trelloyes</h1>
-      </header>
-      <div className='App-list'>
-        {cardLists}
-      </div>
-    </main>
-  );
-    
 }
 
 export default App;
