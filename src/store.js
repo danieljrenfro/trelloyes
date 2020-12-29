@@ -1,4 +1,4 @@
-export default {
+const store = {
   lists: [
     {
       id: '1',
@@ -36,4 +36,6 @@ export default {
     'l': { id: 'l', title: 'Twelfth card', content: 'lorem ipsum' },
     'm': { id: 'm', title: 'Thirteenth card', content: 'lorem ipsum' },
   }
-}
+};
+
+export default store;
