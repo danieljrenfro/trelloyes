@@ -5,6 +5,11 @@ import store from './store';
 
 import './App.css';
 
+function omit(obj, keyToOmit) {
+  let {[keyToOmit]: _, ...rest} = obj;
+  return rest;
+}
+
 class App extends Component {
 
   constructor(props) {
@@ -20,6 +25,20 @@ class App extends Component {
       lists: store.lists,
       allCards: store.allCards
     })
+  }
+
+  handleDeleteCard = (cardId) => {
+    const newLists = this.state.lists.map(list => {
+      const newList = list.cardIds.filter(id => id !== cardId);
+      list.cardIds = newList;
+      return list;
+    })
+
+    this.setState({ lists: newLists });
+
+    const newAllCards = omit(this.state.allCards, cardId)
+
+    this.setState({ allCards: newAllCards });
   }
 
   handleAddRandomCardClicked = (listId) => {
@@ -46,7 +65,6 @@ class App extends Component {
     })
 
     this.setState({ lists: newLists });
-    console.log('State', this.state);
   }
   
   render () {
@@ -65,6 +83,7 @@ class App extends Component {
               header={list.header}
               cards={list.cardIds.map(id => allCards[id])}
               addRandomCard={this.handleAddRandomCardClicked}
+              deleteCard={this.handleDeleteCard}
             />
           ))}
         </div>
